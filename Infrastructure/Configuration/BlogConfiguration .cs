@@ -4,15 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations
 {
-    public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
+    public class BlogConfiguration : IEntityTypeConfiguration<Blog>
     {
-        public void Configure(EntityTypeBuilder<AppUser> builder)
+        public void Configure(EntityTypeBuilder<Blog> builder)
         {
-            builder.ToTable("AppUsers");
+            builder.ToTable("Blogs");
 
-            builder.Property(x => x.FirstName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.LastName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.Dob).HasMaxLength(200);
+            builder.HasKey(x => x.IdBlog);
+            builder.Property(x => x.IdBlog).IsRequired().UseIdentityColumn();
 
         }
     }

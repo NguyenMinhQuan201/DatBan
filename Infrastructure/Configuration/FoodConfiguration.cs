@@ -4,15 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations
 {
-    public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
+    public class FoodConfiguration : IEntityTypeConfiguration<Food>
     {
-        public void Configure(EntityTypeBuilder<AppUser> builder)
+        public void Configure(EntityTypeBuilder<Food> builder)
         {
-            builder.ToTable("AppUsers");
+            builder.ToTable("Foods");
 
-            builder.Property(x => x.FirstName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.LastName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.Dob).HasMaxLength(200);
+            //builder.HasKey(x => x.);
+            //builder.Property(x => x.DishId).IsRequired().UseIdentityColumn();
 
         }
     }

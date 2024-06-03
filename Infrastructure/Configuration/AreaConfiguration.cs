@@ -10,9 +10,8 @@ namespace Infrastructure.Configurations
         {
             builder.ToTable("Areas");
 
-            builder.Property(x => x.FirstName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.LastName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.Dob).HasMaxLength(200);
+            builder.HasKey(x => x.AreaID);
+            builder.Property(x => x.AreaID).IsRequired().UseIdentityColumn();
 
         }
     }

@@ -4,15 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations
 {
-    public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
+    public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
-        public void Configure(EntityTypeBuilder<AppUser> builder)
+        public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.ToTable("AppUsers");
+            builder.ToTable("Orders");
 
-            builder.Property(x => x.FirstName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.LastName).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.Dob).HasMaxLength(200);
+            builder.HasKey(x => x.OrderID);
+            builder.Property(x => x.OrderID).IsRequired().UseIdentityColumn();
 
         }
     }

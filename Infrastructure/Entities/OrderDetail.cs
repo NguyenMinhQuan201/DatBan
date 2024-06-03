@@ -17,6 +17,6 @@ namespace Infrastructure.Entities
         public int NumberOfCustomer { get; set; }
         public int TableID { get; set; }
         public double Payment { get; set; }
-
+        public int Id { get; set; }
     }
 }
