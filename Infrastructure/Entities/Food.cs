@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class Food
+    public class Food : BaseEntity
     {
     }
 }

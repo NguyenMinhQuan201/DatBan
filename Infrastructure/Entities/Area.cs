@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class Area
+    public class Area: BaseEntity
     {
         public int AreaID { get; set; }
         public string AreaName { get; set; } = string.Empty;

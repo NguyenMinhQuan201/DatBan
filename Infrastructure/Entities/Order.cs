@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class Order
+    public class Order : BaseEntity
     {
         public int OrderID { get; set; }
         public string UserName { get; set; } = string.Empty;
         public double PriceTotal { get; set; }
         public string Description { get; set; } = string.Empty;
-        public DateTime DateCreated { get; set; }
+        //public DateTime DateCreated { get; set; }
         public int NumberOfCustomer { get; set; }
         public int TableID { get; set; }
         public double Payment { get; set; }

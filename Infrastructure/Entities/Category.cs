@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class Category
+    public class Category: BaseEntity
     {
         public int IdCategory { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+       
         public bool Status { get; set; }
 
     }

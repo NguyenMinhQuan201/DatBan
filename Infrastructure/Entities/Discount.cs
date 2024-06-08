@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class Discount
+    public class Discount :BaseEntity
     {
         public int DiscountID { get; set; }
         public int Status { get; set; }

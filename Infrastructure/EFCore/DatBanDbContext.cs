@@ -23,7 +23,7 @@ namespace Infrastructure.EF
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new DiscountConfiguration());
             modelBuilder.ApplyConfiguration(new DishConfiguration());
-            modelBuilder.ApplyConfiguration(new FoodConfiguration());
+            //modelBuilder.ApplyConfiguration(new FoodConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
             modelBuilder.ApplyConfiguration(new RestaurantConfiguration());
@@ -40,7 +40,7 @@ namespace Infrastructure.EF
         public DbSet<Category> Categories { get; set; }
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Dish> Dishs { get; set; }
-        public DbSet<Food> Foods { get; set; }
+        //public DbSet<Food> Foods { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }

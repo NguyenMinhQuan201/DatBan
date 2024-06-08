@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class Restaurant
+    public class Restaurant : BaseEntity
     {
         public int RestaurantID { get; set; }
         public string Address { get; set; } = string.Empty;
