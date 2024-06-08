@@ -12,7 +12,7 @@ namespace Infrastructure.Configurations
 
             builder.HasKey(x => x.OrderID);
             builder.Property(x => x.OrderID).IsRequired().UseIdentityColumn();
-
+            
         }
     }
 }

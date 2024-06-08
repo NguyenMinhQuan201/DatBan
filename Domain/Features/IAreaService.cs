@@ -14,11 +14,10 @@ namespace Domain.Features
     {
         public Task<ApiResult<bool>> Create(AreaDto request);
         public Task<ApiResult<bool>> Update(int id, AreaDto request);
-        public Task<ApiResult<bool>> Restore(int id);
         public Task<ApiResult<bool>> Delete(int id);
         public Task<ApiResult<PagedResult<AreaDto>>> GetAll(int? pageSize, int? pageIndex, string? search);
         public Task<ApiResult<AreaDto>> GetById(int Id);
-        public Task<ApiResult<IEnumerable<AreaDto>>> GetAll();
+        public Task<ApiResult<List<AreaDto>>> GetAll();
         /*public Task<UserVmDto> GetById(Guid id);*/
     }
 }

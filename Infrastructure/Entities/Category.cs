@@ -13,6 +13,7 @@ namespace Infrastructure.Entities
         public string Icon { get; set; } = string.Empty;
        
         public bool Status { get; set; }
+        public ICollection<Dish> Dishs { get; set; } = new List<Dish>();
 
     }
 }

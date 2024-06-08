@@ -19,6 +19,8 @@ namespace Infrastructure.Entities
         public double VAT { get; set; }
         public int Phone { get; set; }
         public int DiscountID { get; set; }
+        public ICollection<OrderTable> OrderTables { get; set; } = new List<OrderTable>();
+        public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
     }
 }

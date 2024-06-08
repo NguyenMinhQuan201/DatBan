@@ -19,6 +19,6 @@ namespace Domain.Features
         public Task<ApiResult<OrderDto>> GetById(int id);
         public Task<ApiResult<PagedResult<OrderDto>>> GetAll(int? pageSize, int? pageIndex, string search);
         public Task<ApiResult<List<OrderDetailDto>>> GetAllOrderDetail(int id);
-        public Task<ApiResult<IEnumerable<DishDto>>> GetAll();
+        public Task<ApiResult<List<DishDto>>> GetAll();
     }
 }

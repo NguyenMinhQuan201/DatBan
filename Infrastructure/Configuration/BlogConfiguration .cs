@@ -12,7 +12,7 @@ namespace Infrastructure.Configurations
 
             builder.HasKey(x => x.IdBlog);
             builder.Property(x => x.IdBlog).IsRequired().UseIdentityColumn();
-
+            
         }
     }
 }

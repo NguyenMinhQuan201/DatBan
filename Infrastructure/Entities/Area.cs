@@ -12,6 +12,8 @@ namespace Infrastructure.Entities
         public string AreaName { get; set; } = string.Empty;
 
         public int RestaurantID { get; set; }
+        public virtual Restaurant Restaurant { get; set; }
+        public ICollection<Table> Tables { get; set; } = new List<Table>();
 
     }
 }

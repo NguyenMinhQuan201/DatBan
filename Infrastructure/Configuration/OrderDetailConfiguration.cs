@@ -11,7 +11,9 @@ namespace Infrastructure.Configurations
             builder.ToTable("OrderDetails");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).IsRequired().UseIdentityColumn();
-
+            builder.HasOne<Order>(x => x.Order)
+                .WithMany(x => x.OrderDetails)
+                .HasForeignKey(x => x.OrderID).IsRequired();
         }
     }
 }

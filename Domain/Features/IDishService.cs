@@ -16,8 +16,8 @@ namespace Domain.Features
         public Task<ApiResult<bool>> Create(DishDto request);
         public Task<ApiResult<bool>> Update(int id, DishDto request);
         public Task<ApiResult<bool>> Delete(int id);
-        public Task<ApiResult<PagedResult<DishDto>>> GetByName(int? pageSize, int? pageIndex, string? name);
+        public Task<ApiResult<PagedResult<DishDto>>> GetAll(int? pageSize, int? pageIndex, string? name);
         public Task<ApiResult<DishDto>> GetById(int Id);
-        public Task<ApiResult<IEnumerable<DishDto>>> GetAll();
+        public Task<ApiResult<List<DishDto>>> GetAll();
     }
 }

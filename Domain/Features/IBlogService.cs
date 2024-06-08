@@ -16,6 +16,6 @@ namespace Domain.Features
         public Task<ApiResult<bool>> Delete(int id);
         public Task<ApiResult<BlogDto>> GetById(int id);
         public Task<ApiResult<PagedResult<BlogDto>>> GetAll(int? pageSize, int? pageIndex, string?search);
-        public Task<ApiResult<IEnumerable<BlogDto>>> GetAll();
+        public Task<ApiResult<List<BlogDto>>> GetAll();
     }
 }

@@ -11,6 +11,9 @@ namespace Infrastructure.Configurations
             builder.ToTable("Tables");
             builder.HasKey(x => x.TableID);
             builder.Property(x => x.TableID).IsRequired().UseIdentityColumn();
+            builder.HasOne<Area>(x => x.Area)
+                .WithMany(x => x.Tables)
+                .HasForeignKey(x => x.TableID).IsRequired();
         }
     }
 }

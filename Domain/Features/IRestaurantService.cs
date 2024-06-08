@@ -18,6 +18,6 @@ namespace Domain.Features
         public Task<ApiResult<bool>> Delete(int id);
         public Task<ApiResult<PagedResult<RestaurantDto>>> GetByName(int? pageSize, int? pageIndex, string? search);
         public Task<ApiResult<RestaurantDto>> GetById(int Id);
-        public Task<ApiResult<IEnumerable<RestaurantDto>>> GetAll();
+        public Task<ApiResult<List<RestaurantDto>>> GetAll();
     }
 }
