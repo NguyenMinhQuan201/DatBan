@@ -10,7 +10,7 @@ namespace Infrastructure.Reponsitories.OrderReponsitory
 {
     public interface IOrderRepository : IRepositoryBase<Order>
     {
-        //Task<Order> CreateAsyncFLByOrder(Order entity);
+        Task<Order> CreateAsyncFLByOrder(Order entity);
         //Task<List<Notifi>> GetAllNoti();
         //Task<bool> UpdateNoti(Notifi obj);
     }

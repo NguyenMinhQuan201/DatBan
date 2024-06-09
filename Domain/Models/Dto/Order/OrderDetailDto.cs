@@ -18,6 +18,8 @@ namespace Domain.Models.Dto.Order
         public int TableID { get; set; }
         public double Payment { get; set; }
         public int Id { get; set; }
+        public int TableNumber { get; set; }
+
     }
     public class OrderDetailRequest
     {

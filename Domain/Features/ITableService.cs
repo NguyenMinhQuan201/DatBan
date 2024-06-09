@@ -17,7 +17,7 @@ namespace Domain.Features
         public Task<ApiResult<bool>> Create(TableDto request);
         public Task<ApiResult<bool>> Update(int id, TableDto request);
         public Task<ApiResult<bool>> Delete(int id);
-        public Task<ApiResult<PagedResult<TableDto>>> GetByName(int? pageSize, int? pageIndex, string? search);
+        public Task<ApiResult<PagedResult<TableDto>>> GetAll(int? pageSize, int? pageIndex, string? search);
         public Task<ApiResult<TableDto>> GetById(int Id);
         public Task<ApiResult<List<TableDto>>> GetAll();
     }

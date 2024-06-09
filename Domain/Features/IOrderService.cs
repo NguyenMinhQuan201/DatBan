@@ -6,6 +6,7 @@ using Domain.Models.Dto.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Domain.Features
         public Task<ApiResult<OrderDto>> GetById(int id);
         public Task<ApiResult<PagedResult<OrderDto>>> GetAll(int? pageSize, int? pageIndex, string search);
         public Task<ApiResult<List<OrderDetailDto>>> GetAllOrderDetail(int id);
-        public Task<ApiResult<List<DishDto>>> GetAll();
+        public Task<ApiResult<List<OrderDetailDto>>> GetAll();
+        public Task<ApiResult<PagedResult<OrderDetailDto>>> GetAllOrderDetaill(int? pageSize, int? pageIndex, string search);
     }
 }

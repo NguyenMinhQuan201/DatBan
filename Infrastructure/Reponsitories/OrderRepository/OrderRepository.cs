@@ -17,22 +17,12 @@ namespace Infrastructure.Reponsitories.OrderReponsitory
         {
             _db = dbContext;
         }
-        //public async Task<Order> CreateAsyncFLByOrder(Order entity)
-        //{
-        //    _db.Orders.Add(entity);
-        //    await _db.SaveChangesAsync();
-        //    var noti = new Notifi
-        //    {
-        //        IsRead = false,
-        //        Link = "order-list/edit/" + entity.IdOrder,
-        //        Name = "Đơn hàng",
-        //        Price = entity.SumPrice,
-        //        Time = DateTime.Now,
-        //    };
-        //    _db.Notifis.Add(noti);
-        //    await _db.SaveChangesAsync();
-        //    return entity;
-        //}
+        public async Task<Order> CreateAsyncFLByOrder(Order entity)
+        {
+            _db.Orders.Add(entity);
+            await _db.SaveChangesAsync();
+            return entity;
+        }
 
         //public async Task<List<Notifi>> GetAllNoti()
         //{

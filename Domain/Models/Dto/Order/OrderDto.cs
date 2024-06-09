@@ -19,6 +19,8 @@ namespace Domain.Models.Dto.Order
         public double VAT { get; set; }
         public int Phone { get; set; }
         public int DiscountID { get; set; }
+        public List<OrderDetailDto> OrderDetailDtos { get; set; } = new List<OrderDetailDto>();
+
     }
     public class ChartCol
     {
