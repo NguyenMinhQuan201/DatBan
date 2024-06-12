@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class InitFirst : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -236,8 +236,8 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Dishs", x => x.DishId);
                     table.ForeignKey(
-                        name: "FK_Dishs_Categories_DishId",
-                        column: x => x.DishId,
+                        name: "FK_Dishs_Categories_CategoryID",
+                        column: x => x.CategoryID,
                         principalTable: "Categories",
                         principalColumn: "IdCategory",
                         onDelete: ReferentialAction.Cascade);
@@ -286,8 +286,8 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Areas", x => x.AreaID);
                     table.ForeignKey(
-                        name: "FK_Areas_Restaurants_AreaID",
-                        column: x => x.AreaID,
+                        name: "FK_Areas_Restaurants_RestaurantID",
+                        column: x => x.RestaurantID,
                         principalTable: "Restaurants",
                         principalColumn: "RestaurantID",
                         onDelete: ReferentialAction.Cascade);
@@ -309,8 +309,8 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Tables", x => x.TableID);
                     table.ForeignKey(
-                        name: "FK_Tables_Areas_TableID",
-                        column: x => x.TableID,
+                        name: "FK_Tables_Areas_AreaID",
+                        column: x => x.AreaID,
                         principalTable: "Areas",
                         principalColumn: "AreaID",
                         onDelete: ReferentialAction.Cascade);
@@ -344,6 +344,16 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Areas_RestaurantID",
+                table: "Areas",
+                column: "RestaurantID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Dishs_CategoryID",
+                table: "Dishs",
+                column: "CategoryID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_OrderID",
                 table: "OrderDetails",
                 column: "OrderID");
@@ -352,6 +362,11 @@ namespace Infrastructure.Migrations
                 name: "IX_OrderTables_TableID",
                 table: "OrderTables",
                 column: "TableID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tables_AreaID",
+                table: "Tables",
+                column: "AreaID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

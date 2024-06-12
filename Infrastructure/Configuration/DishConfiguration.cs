@@ -13,7 +13,7 @@ namespace Infrastructure.Configurations
             builder.Property(x => x.DishId).IsRequired().UseIdentityColumn();
             builder.HasOne<Category>(x => x.Category)
                 .WithMany(x => x.Dishs)
-                .HasForeignKey(x => x.DishId).IsRequired();
+                .HasForeignKey(x => x.CategoryID).IsRequired();
         }
     }
 }

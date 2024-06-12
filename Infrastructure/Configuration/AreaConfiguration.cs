@@ -14,7 +14,7 @@ namespace Infrastructure.Configurations
             builder.Property(x => x.AreaID).IsRequired().UseIdentityColumn();
             builder.HasOne<Restaurant>(x => x.Restaurant)
                 .WithMany(x => x.Areas)
-                .HasForeignKey(x => x.AreaID).IsRequired();
+                .HasForeignKey(x => x.RestaurantID).IsRequired();
         }
     }
 }

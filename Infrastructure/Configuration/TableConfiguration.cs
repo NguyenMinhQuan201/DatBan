@@ -13,7 +13,7 @@ namespace Infrastructure.Configurations
             builder.Property(x => x.TableID).IsRequired().UseIdentityColumn();
             builder.HasOne<Area>(x => x.Area)
                 .WithMany(x => x.Tables)
-                .HasForeignKey(x => x.TableID).IsRequired();
+                .HasForeignKey(x => x.AreaID).IsRequired();
         }
     }
 }

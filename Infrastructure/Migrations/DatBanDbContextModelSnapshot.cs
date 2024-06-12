@@ -125,6 +125,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Entities.Area", b =>
                 {
                     b.Property<int>("AreaID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AreaID"), 1L, 1);
@@ -143,6 +144,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("AreaID");
+
+                    b.HasIndex("RestaurantID");
 
                     b.ToTable("Areas", (string)null);
                 });
@@ -246,6 +249,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Entities.Dish", b =>
                 {
                     b.Property<int>("DishId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DishId"), 1L, 1);
@@ -274,6 +278,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("DishId");
+
+                    b.HasIndex("CategoryID");
 
                     b.ToTable("Dishs", (string)null);
                 });
@@ -425,6 +431,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Entities.Table", b =>
                 {
                     b.Property<int>("TableID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TableID"), 1L, 1);
@@ -445,6 +452,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("TableID");
+
+                    b.HasIndex("AreaID");
 
                     b.ToTable("Tables", (string)null);
                 });
@@ -550,7 +559,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Entities.Restaurant", "Restaurant")
                         .WithMany("Areas")
-                        .HasForeignKey("AreaID")
+                        .HasForeignKey("RestaurantID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -561,7 +570,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Entities.Category", "Category")
                         .WithMany("Dishs")
-                        .HasForeignKey("DishId")
+                        .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -602,7 +611,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Entities.Area", "Area")
                         .WithMany("Tables")
-                        .HasForeignKey("TableID")
+                        .HasForeignKey("AreaID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
