@@ -21,6 +21,7 @@ namespace Domain.Features
         public Task<ApiResult<PagedResult<OrderDto>>> GetAll(int? pageSize, int? pageIndex, string search);
         public Task<ApiResult<List<OrderDetailDto>>> GetAllOrderDetail(int id);
         public Task<ApiResult<List<OrderDetailDto>>> GetAll();
+        public Task<ApiResult<List<OrderDto>>> GetAllOrder();
         public Task<ApiResult<PagedResult<OrderDetailDto>>> GetAllOrderDetaill(int? pageSize, int? pageIndex, string search);
     }
 }

@@ -140,6 +140,7 @@ namespace Domain.Features.Order
                     UserName = request.UserName,
                     TableID = request.TableID,
                     OrderID = request.OrderID,
+                    OrderDetailDtos = (List<OrderDetailDto>)request.OrderDetails
                 }).ToList();
             var pagedResult = new PagedResult<OrderDto>()
             {
@@ -329,6 +330,29 @@ namespace Domain.Features.Order
                 return new ApiErrorResult<PagedResult<OrderDetailDto>>("Khong co gi ca");
             }
             return new ApiSuccessResult<PagedResult<OrderDetailDto>>(pagedResult);
+        }
+
+        public async Task<ApiResult<List<OrderDto>>> GetAllOrder()
+        {
+            var query = await _orderReponsitory.GetAll();
+            var data = query
+                .Select(request => new OrderDto()
+                {
+                    CreatedAt = DateTime.Now,
+                    Phone = request.Phone,
+                    UpdatedAt = DateTime.Now,
+                    Description = request.Description,
+                    DiscountID = request.DiscountID,
+                    NumberOfCustomer = request.NumberOfCustomer,
+                    VAT = request.VAT,
+                    Payment = request.Payment,
+                    PriceTotal = request.PriceTotal,
+                    UserName = request.UserName,
+                    TableID = request.TableID,
+                    OrderID = request.OrderID,
+                    OrderDetailDtos = (List<OrderDetailDto>)request.OrderDetails
+                }).ToList();
+            return new ApiSuccessResult<List<OrderDto>>(data);
         }
     }
 }
