@@ -24,10 +24,10 @@ namespace Library.Extensions.ExtensionServices
                     configuration.CreateMap(type, dtoType);
                 }
             }
-            configuration.CreateMap<Order, OrderDto>();
-            configuration.CreateMap<OrderDto, Order>();
-            configuration.CreateMap<OrderDetail, OrderDetailDto>();
-            configuration.CreateMap<OrderDetailDto, OrderDetail>();
+            //configuration.CreateMap<Order, OrderDto>();
+            //configuration.CreateMap<OrderDto, Order>();
+            //configuration.CreateMap<OrderDetail, OrderDetailDto>();
+            //configuration.CreateMap<OrderDetailDto, OrderDetail>();
             //configuration.CreateMap<ProductImg, ImageDto>();
             //configuration.CreateMap<ImageDto, ProductImg>();
             //configuration.CreateMap(assembly2.GetExportedTypes().Where(t => t.IsClass && !t.IsAbstract && !t.IsGenericType).FirstOrDefault(x=>x.Name=="Product"),
