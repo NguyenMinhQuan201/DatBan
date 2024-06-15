@@ -17,8 +17,9 @@ namespace Infrastructure.Entities
         public int NumberOfCustomer { get; set; }
         public int TableID { get; set; }
         public double Payment { get; set; }
+        public int Quantity {  get; set; }
         public int Id { get; set; }
-        public virtual Order Order { get; set; } = new Order();
-
+        public virtual Order Order { get; set; }
+        
     }
 }

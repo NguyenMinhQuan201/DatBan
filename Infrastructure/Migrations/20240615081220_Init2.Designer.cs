@@ -4,6 +4,7 @@ using Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DatBanDbContext))]
-    partial class DatBanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240615081220_Init2")]
+    partial class Init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,6 +266,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -367,9 +372,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("DiscountID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("From")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("NumberOfCustomer")
                         .HasColumnType("int");
 
@@ -384,9 +386,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("TableID")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("To")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -432,9 +431,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
 
                     b.Property<int>("TableID")
                         .HasColumnType("int");

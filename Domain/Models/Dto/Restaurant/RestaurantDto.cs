@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infrastructure.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace Domain.Models.Dto.Product
         public int RestaurantID { get; set; }
         public string Address { get; set; } = string.Empty;
         public int Status { get; set; } = 0;
+        public List<AreaDto> Areas { get; set; } = new List<AreaDto>();
+
     }
     public class Rating
     {

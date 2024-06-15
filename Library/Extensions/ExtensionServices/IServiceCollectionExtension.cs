@@ -21,7 +21,11 @@ namespace Library.Extensions.ExtensionServices
             services.AddTransient<IModuleService, ModuleService>();
             services.AddTransient<IBlogService, BlogService>();
             services.AddTransient<IOperationService, OperationService>();
-
+            services.AddTransient<IRestaurantService, RestaurantService>();
+            services.AddTransient<IAreaService, AreaService>();
+            services.AddTransient<IBlogService, BlogService>();
+            services.AddTransient<IDishService, DishService>();
+            services.AddTransient<ITableService, TableService>();
             return services;
         }
     }

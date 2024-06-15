@@ -29,7 +29,7 @@ namespace Infrastructure.Services
                 UpdatedAt = request.UpdatedAt,
                 Description = request.Description,
                 CategoryID = request.CategoryID,
-                Discount = request.Discount,
+                //Discount = request.Discount,
                 Name = request.Name,
                 Price = request.Price,
             };
@@ -77,7 +77,7 @@ namespace Infrastructure.Services
                     UpdatedAt = request.UpdatedAt,
                     Description = request.Description,
                     CategoryID = request.CategoryID,
-                    Discount = request.Discount,
+                    //Discount = request.Discount,
                     Name = request.Name,
                     Price = request.Price,
                 }).ToList();
@@ -106,9 +106,10 @@ namespace Infrastructure.Services
                     UpdatedAt = request.UpdatedAt,
                     Description = request.Description,
                     CategoryID = request.CategoryID,
-                    Discount = request.Discount,
+                    //Discount = request.Discount,
                     Name = request.Name,
                     Price = request.Price,
+                    DishId = request.DishId,
                 }).ToList();
 
             return new ApiSuccessResult<List<DishDto>>(result);
@@ -130,7 +131,7 @@ namespace Infrastructure.Services
                     UpdatedAt = request.UpdatedAt,
                     Description = request.Description,
                     CategoryID = request.CategoryID,
-                    Discount = request.Discount,
+                    //Discount = request.Discount,
                     Name = request.Name,
                     Price = request.Price,
                 };
@@ -152,7 +153,7 @@ namespace Infrastructure.Services
                 findobj.UpdatedAt = request.UpdatedAt;
                 findobj.Description = request.Description;
                 findobj.CategoryID = request.CategoryID;
-                findobj.Discount = request.Discount;
+                //findobj.Discount = request.Discount;
                 findobj.Name = request.Name;
                 findobj.Price = request.Price;
             }

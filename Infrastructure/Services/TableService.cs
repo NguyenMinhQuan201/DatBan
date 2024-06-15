@@ -76,6 +76,8 @@ namespace Infrastructure.Services
                     TableNumber = request.TableNumber,
                     Status = request.Status,
                     AreaID = request.AreaID,
+                    TableID = request.TableID,
+
                 }).ToList();
             var pagedResult = new PagedResult<TableDto>()
             {
@@ -103,6 +105,7 @@ namespace Infrastructure.Services
                     TableNumber = request.TableNumber,
                     Status = request.Status,
                     AreaID = request.AreaID,
+                    TableID = request.TableID,
                 }).ToList();
 
             return new ApiSuccessResult<List<TableDto>>(result);

@@ -12,15 +12,16 @@ namespace Infrastructure.Entities
         public string UserName { get; set; } = string.Empty;
         public double PriceTotal { get; set; }
         public string Description { get; set; } = string.Empty;
-        //public DateTime DateCreated { get; set; }
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
         public int NumberOfCustomer { get; set; }
         public int TableID { get; set; }
         public double Payment { get; set; }
         public double VAT { get; set; }
         public int Phone { get; set; }
         public int DiscountID { get; set; }
-        public ICollection<OrderTable> OrderTables { get; set; } = new List<OrderTable>();
-        public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+        public ICollection<OrderTable>?OrderTables { get; set; } 
+        public ICollection<OrderDetail>? OrderDetails { get; set; } 
 
     }
 }

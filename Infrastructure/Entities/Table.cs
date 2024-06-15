@@ -12,8 +12,8 @@ namespace Infrastructure.Entities
         public int TableNumber { get; set; }
         public int Status { get; set; }
         public int AreaID { get; set; }
-        public virtual Area Area { get; set; } = new Area();
-        public ICollection<OrderTable> OrderTables { get; set; } = new List<OrderTable>();
+        public virtual Area Area { get; set; }
+        public ICollection<OrderTable> OrderTables { get; set; } 
 
     }
 }

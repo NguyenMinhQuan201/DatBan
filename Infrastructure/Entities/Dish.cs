@@ -13,7 +13,6 @@ namespace Infrastructure.Entities
         public double Price { get; set; }
         public string Description { get; set; } = string.Empty;
         public int CategoryID { get; set; }
-        public double Discount { get; set; }
         public virtual Category Category { get; set; }
 
     }

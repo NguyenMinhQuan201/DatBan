@@ -15,5 +15,7 @@ namespace Domain.Models.Dto.UserDto
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public DateTime Dob { get; set; }
+        public int RestaurantID { get; set; }
+        public int Status { get; set; }
     }
 }

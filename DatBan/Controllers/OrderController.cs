@@ -25,7 +25,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _orderService.Create(request);
-            if (result.IsSuccessed == true) return BadRequest();
+            if (!result.IsSuccessed == true) return BadRequest();
             return Ok(result);
         }
         [HttpPut("put")]
@@ -85,7 +85,7 @@ namespace API.Controllers
             return Ok(result);
         }
         [HttpGet("get-all-order-detail")]
-        public async Task<IActionResult> GetAllOrderDetail(int id)
+        public async Task<IActionResult> GetAllOrderDetail()
         {
             if (!ModelState.IsValid)
             {

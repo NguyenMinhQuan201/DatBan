@@ -13,7 +13,7 @@ namespace Infrastructure.Entities
 
         public int RestaurantID { get; set; }
         public virtual Restaurant Restaurant { get; set; }
-        public ICollection<Table> Tables { get; set; } = new List<Table>();
+        public ICollection<Table> Tables { get; set; }
 
     }
 }

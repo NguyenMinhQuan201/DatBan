@@ -12,14 +12,16 @@ namespace Domain.Models.Dto.Order
         public string UserName { get; set; } = string.Empty;
         public double PriceTotal { get; set; }
         public string Description { get; set; } = string.Empty;
-        public DateTime DateCreated { get; set; }
+        //public DateTime DateCreated { get; set; }
         public int NumberOfCustomer { get; set; }
         public int TableID { get; set; }
         public double Payment { get; set; }
         public double VAT { get; set; }
         public int Phone { get; set; }
         public int DiscountID { get; set; }
-        public List<OrderDetailDto> OrderDetailDtos { get; set; } = new List<OrderDetailDto>();
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
+        public List<OrderDetailDto>?OrderDetailDtos { get; set; }
 
     }
     public class ChartCol

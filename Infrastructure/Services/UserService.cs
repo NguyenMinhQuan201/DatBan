@@ -123,6 +123,8 @@ namespace Domain.IServices.User
                     FirstName = x.FirstName,
                     Id = x.Id,
                     LastName = x.LastName,
+                    RestaurantID =x.RestaurantID,
+                    Status = x.Status,
                 }).ToListAsync();
             var pagedResult = new PagedResult<UserVmDto>()
             {
@@ -359,6 +361,8 @@ namespace Domain.IServices.User
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.PhoneNumber = request.PhoneNumber;
+            user.RestaurantID = request.RestaurantID;
+            user.Status = request.Status;
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             await _userManager.ResetPasswordAsync(user, token, request.PassWord);
             var result = await _userManager.UpdateAsync(user);

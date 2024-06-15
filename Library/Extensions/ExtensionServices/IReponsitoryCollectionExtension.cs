@@ -2,13 +2,16 @@
 using Infrastructure.Reponsitories.BlogRepository;
 using Infrastructure.Reponsitories.CategoryReponsitories;
 using Infrastructure.Reponsitories.DiscountReponsitories;
+using Infrastructure.Reponsitories.DishReponsitories;
 using Infrastructure.Reponsitories.ModuleReponsitories;
 using Infrastructure.Reponsitories.OperationReponsitories;
 using Infrastructure.Reponsitories.OrderDetailReponsitory;
 using Infrastructure.Reponsitories.OrderReponsitory;
 using Infrastructure.Reponsitories.OrderTableRepository;
+using Infrastructure.Reponsitories.RestaurantReponsitory;
 using Infrastructure.Reponsitories.RoleOperationReponsitories;
 using Infrastructure.Reponsitories.RoleOperationRepository;
+using Infrastructure.Reponsitories.RoleReponsitories;
 using Infrastructure.Reponsitories.TableReponsitory;
 using Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +32,11 @@ namespace Library.Extensions.ExtensionServices
             services.AddTransient<IDiscountRepository, DiscountRepository>();
             services.AddTransient<IOrderTableRepository, OrderTableRepository>();
             services.AddTransient<ITableRepository, TableRepository>();
-
+            services.AddTransient<IRestaurantRepository, RestaurantRepository>();
+            services.AddTransient<IAreaRepository, AreaRepository>();
+            services.AddTransient<IBlogRepository, BlogRepository>();
+            services.AddTransient<IDishRepository, DishRepository>();
+            services.AddTransient<ITableRepository, TableRepository>();
             return services;
 
         }
