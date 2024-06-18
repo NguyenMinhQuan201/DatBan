@@ -13,6 +13,11 @@ namespace Api.Controllers
     
     public class UserController : ControllerBase
     {
+        private const string INDEX_CST = "User_Index";
+        private const string CREATE_CST = "User_Create";
+        private const string EDIT_CST = "User_Edit";
+        private const string DELETE_CST = "User_Delete";
+        private const string ADMIN_CST = "admin";
         private readonly IUserService _userService;
         public UserController(IUserService userService)
         {
@@ -123,7 +128,7 @@ namespace Api.Controllers
             var products = await _userService.GetAll(pageSize,  pageIndex, name);
             return Ok(products);
         }
-        [Authorize(Policy = "admin")]
+        [Authorize(Policy = INDEX_CST)]
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(Guid Id)
         {

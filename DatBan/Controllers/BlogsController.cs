@@ -10,6 +10,10 @@ namespace API.Controllers
     [ApiController]
     public class BlogsController : ControllerBase
     {
+        //private const string INDEX_CST = "Blog_Index";
+        //private const string CREATE_CST = "Blog_Create";
+        //private const string EDIT_CST = "Blog_Edit";
+        //private const string DELETE_CST = "Blog_Delete";
         private readonly IBlogService _blogService;
         public BlogsController(IBlogService blogService)
         {

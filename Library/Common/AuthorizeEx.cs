@@ -39,7 +39,7 @@ namespace Library.Common
                         {
                             options.AddPolicy(fieldValue.ToString(), policy =>
                             {
-                                policy.RequireClaim(fieldValue.ToString());
+                                policy.RequireRole(fieldValue.ToString());
                             });
                         }
                     }
