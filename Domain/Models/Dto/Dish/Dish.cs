@@ -15,6 +15,6 @@ namespace Domain.Models.Dto.ImportInvoiceDto
         public double Price { get; set; }
         public string Description { get; set; } = string.Empty;
         public int CategoryID { get; set; }
-
+        public string NameCate { get; set; }
     }
 }

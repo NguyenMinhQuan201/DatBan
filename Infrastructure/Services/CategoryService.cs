@@ -147,9 +147,11 @@ namespace Infrastructure.Services
                 findobj.Status = request.Status;
                 findobj.CreatedAt = request.CreatedAt;
                 findobj.Icon = request.Icon;
-                findobj.IdCategory = request.IdCategory;
+                //findobj.IdCategory = request.IdCategory;
                 findobj.Name = request.Name;
                 findobj.UpdatedAt = request.UpdatedAt;
+                await _CategoryRepository.UpdateAsync(findobj);
+                return new ApiSuccessResult<bool>(true);
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
         }

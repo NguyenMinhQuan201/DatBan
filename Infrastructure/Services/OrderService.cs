@@ -55,37 +55,15 @@ namespace Domain.Features.Order
                 Payment = request.Payment,
                 PriceTotal = request.PriceTotal,
                 UserName = request.UserName,
-                TableID = request.TableID,
+                TableID = -1,
                 OrderID = request.OrderID,
                 From =request.From,
                 To =request.To,
             };
             var temp = new List<OrderDetail>();
-            if (request.OrderDetailDtos != null)
-            {
-                foreach (var orderDetail in request.OrderDetailDtos)
-                {
-                    var _productOrder = new OrderDetail()
-                    {
-                        CreatedAt = DateTime.Now,
-                        Price = orderDetail.Price,
-                        Description = orderDetail.Description,
-                        DishID = orderDetail.DishID,
-                        NumberOfCustomer = orderDetail.NumberOfCustomer,
-                        OrderID = orderDetail.OrderID,
-                        Payment = orderDetail.Payment,
-                        TableID = orderDetail.TableID,
-                        Quantity = orderDetail.Quantity,
-                        UpdatedAt = DateTime.Now,
-                        //UserID = orderDetail.UserID,
-                    };
-                    //sửa sản phẩm trong kho
-                    temp.Add(_productOrder);
-                }
-                order.OrderDetails = (ICollection<OrderDetail>)temp;
-            }
             try
             {
+                //var tabel = _tableRepository.GetById(order.TableID);
                 var result = await _orderReponsitory.CreateAsyncFLByOrder(order);
                 request.OrderID = result.OrderID;
             }
@@ -191,16 +169,12 @@ namespace Domain.Features.Order
                 findobj.PriceTotal = request.PriceTotal;
                 findobj.UserName = request.UserName;
                 findobj.TableID = request.TableID;
-                //findobj.OrderID = request.OrderID;
-                
+                // lay ra ban
+                //var tabel = await _tableRepository.GetById(request.TableID);
+                //tabel.Status = 1;
                 await _orderReponsitory.UpdateAsync(findobj);
                 var orderDetail = await _orderDetailReponsitory.GetByCondition(x => x.OrderID == id);
-                //foreach (var item in orderDetail)
-                //{
-                //    var pro = await _productReponsitory.GetByProductID(item.IdProduct);
-                //    pro.Quantity = pro.Quantity - item.Quantity;
-                //    await _productReponsitory.UpdateAsync(pro);
-                //}
+                
                 return new ApiSuccessResult<bool>(true);
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");

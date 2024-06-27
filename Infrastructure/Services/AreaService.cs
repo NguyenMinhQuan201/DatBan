@@ -150,7 +150,7 @@ namespace Infrastructure.Services
                 findobj.AreaName = request.AreaName;
                 findobj.CreatedAt = request.CreatedAt;
                 findobj.RestaurantID = request.RestaurantID;
-                findobj.AreaID = request.AreaID;
+                //findobj.AreaID = request.AreaID;
                 findobj.UpdatedAt = request.UpdatedAt;
                 await _areaRepository.UpdateAsync(findobj);
                 return new ApiSuccessResult<bool>(true);

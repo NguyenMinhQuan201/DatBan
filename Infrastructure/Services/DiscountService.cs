@@ -138,6 +138,8 @@ namespace Infrastructure.Services
                 findobj.CreatedAt = request.CreatedAt;
                 findobj.DiscountName = request.DiscountName;
                 findobj.UpdatedAt = request.UpdatedAt;
+                await _DiscountRepository.UpdateAsync(findobj);
+                return new ApiSuccessResult<bool>(true);
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
         }

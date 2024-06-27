@@ -148,6 +148,8 @@ namespace Infrastructure.Services
                 findobj.TableNumber = request.TableNumber;
                 findobj.Status = request.Status;
                 findobj.AreaID = request.AreaID;
+                await _TableRepository.UpdateAsync(findobj);
+                return new ApiSuccessResult<bool>(true);
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
         }

@@ -3,6 +3,7 @@ using Domain.Common;
 using Domain.Features;
 using Domain.Models.Dto.ImportInvoiceDto;
 using Infrastructure.Entities;
+using Infrastructure.Reponsitories.CategoryReponsitories;
 using Infrastructure.Reponsitories.DishReponsitories;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,11 @@ namespace Infrastructure.Services
     public class DishService : IDishService
     {
         private readonly IDishRepository _DishRepository;
-        public DishService(IDishRepository DishRepository)
+        private readonly ICategoryRepository _categoryRepository;
+        public DishService(IDishRepository DishRepository, ICategoryRepository categoryRepository)
         {
             _DishRepository = DishRepository;
+            _categoryRepository = categoryRepository;
         }
         public async Task<ApiResult<bool>> Create(DishDto request)
         {
@@ -99,6 +102,7 @@ namespace Infrastructure.Services
         public async Task<ApiResult<List<DishDto>>> GetAll()
         {
             var totalRow = await _DishRepository.GetAll();
+            var nameCategories = _categoryRepository.GetAllAsQueryable().Result.ToList();
             var result = totalRow
                 .Select(request => new DishDto()
                 {
@@ -110,6 +114,7 @@ namespace Infrastructure.Services
                     Name = request.Name,
                     Price = request.Price,
                     DishId = request.DishId,
+                    NameCate = nameCategories.Where(x=>x.IdCategory == request.CategoryID).FirstOrDefault()?.Name ?? "Không tên"
                 }).ToList();
 
             return new ApiSuccessResult<List<DishDto>>(result);
@@ -156,6 +161,8 @@ namespace Infrastructure.Services
                 //findobj.Discount = request.Discount;
                 findobj.Name = request.Name;
                 findobj.Price = request.Price;
+                await _DishRepository.UpdateAsync(findobj);
+                return new ApiSuccessResult<bool>(true);
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
         }

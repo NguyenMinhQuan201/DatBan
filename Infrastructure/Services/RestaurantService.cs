@@ -143,6 +143,8 @@ namespace Infrastructure.Services
                 findobj.UpdatedAt = request.UpdatedAt;
                 findobj.Address = request.Address;
                 findobj.Status = request.Status;
+                await _RestaurantRepository.UpdateAsync(findobj);
+                return new ApiSuccessResult<bool>(true);
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
         }
