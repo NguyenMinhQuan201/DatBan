@@ -1,5 +1,6 @@
 using AutoMapper;
 using DataDemo.Common;
+using EmailApp;
 using Infrastructure.EF;
 using Infrastructure.Entities;
 using Library.Common;
@@ -12,6 +13,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var emailConfig = builder.Configuration
+        .GetSection("EmailConfiguration")
+        .Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 // Add services to the container.
 

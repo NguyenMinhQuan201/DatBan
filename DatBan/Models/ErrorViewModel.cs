@@ -6,4 +6,8 @@ namespace DatBan.Models
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+    }
 }
