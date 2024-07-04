@@ -26,6 +26,8 @@ namespace Library.Extensions.ExtensionServices
             services.AddTransient<IBlogService, BlogService>();
             services.AddTransient<IDishService, DishService>();
             services.AddTransient<ITableService, TableService>();
+            services.AddTransient<IUserOperationService, UserOperationService>();
+
             return services;
         }
     }

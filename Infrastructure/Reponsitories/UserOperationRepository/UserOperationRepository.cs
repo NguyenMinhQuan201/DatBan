@@ -1,7 +1,7 @@
 ﻿using Infrastructure.EF;
 using Infrastructure.Entities;
 using Infrastructure.Reponsitories.BaseReponsitory;
-using Infrastructure.Reponsitories.RoleOperationRepository;
+using Infrastructure.Reponsitories.UserOperationRepository;
 using Infrastructure.Reponsitories.UserReponsitories;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,14 +11,14 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Reponsitories.RoleOperationReponsitories
+namespace Infrastructure.Reponsitories.UserOperationReponsitories
 {
-    public class RoleOperationReponsitories : RepositoryBase<RoleOperation>, IRoleOperationRepository
+    public class UserOperationReponsitories : RepositoryBase<UserOperation>, IUserOperationRepository
     {
         private readonly DatBanDbContext _dbcontext;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _OperationManager;
-        public RoleOperationReponsitories(DatBanDbContext dbContext, SignInManager<AppUser> signInManager, UserManager<AppUser> OperationManager) : base(dbContext)
+        public UserOperationReponsitories(DatBanDbContext dbContext, SignInManager<AppUser> signInManager, UserManager<AppUser> OperationManager) : base(dbContext)
         {
             _dbcontext = dbContext;
             _signInManager = signInManager; 

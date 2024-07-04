@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Models.Dto.UserDto;
 
-namespace Infrastructure.Reponsitories.RoleOperationRepository
+namespace Infrastructure.Reponsitories.UserOperationRepository
 {
-    public interface IRoleOperationRepository : IRepositoryBase<RoleOperation>
+    public interface IUserOperationRepository : IRepositoryBase<UserOperation>
     {
         
     }

@@ -128,7 +128,7 @@ namespace Api.Controllers
             var products = await _userService.GetAll(pageSize,  pageIndex, name);
             return Ok(products);
         }
-        [Authorize(Policy = INDEX_CST)]
+        //[Authorize(Policy = INDEX_CST)]
         [HttpGet("get-by-id")]
         public async Task<IActionResult> GetById(Guid Id)
         {

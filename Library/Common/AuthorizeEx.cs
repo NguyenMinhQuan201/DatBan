@@ -39,7 +39,8 @@ namespace Library.Common
                         {
                             options.AddPolicy(fieldValue.ToString(), policy =>
                             {
-                                policy.RequireRole(fieldValue.ToString());
+                                //policy.RequireRole(fieldValue.ToString());
+                                policy.RequireClaim("Operations", fieldValue.ToString());
                             });
                         }
                     }

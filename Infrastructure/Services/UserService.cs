@@ -8,7 +8,7 @@ using Infrastructure.EF;
 using Infrastructure.Entities;
 using Infrastructure.Reponsitories.ModuleReponsitories;
 using Infrastructure.Reponsitories.OperationReponsitories;
-using Infrastructure.Reponsitories.RoleOperationRepository;
+using Infrastructure.Reponsitories.UserOperationRepository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +18,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Domain.IServices.User
 {
@@ -28,21 +29,21 @@ namespace Domain.IServices.User
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IConfiguration _configuration;
-        private readonly IRoleOperationRepository _roleOperationRepository;
+        private readonly IUserOperationRepository _userOperationRepository;
         private readonly IOperationRepository _operationRepository;
         private readonly IModuleRepository _moduleRepository;
-        public UserService(IConfiguration configuration, 
-            DatBanDbContext dbcontext, 
+        public UserService(IConfiguration configuration,
+            DatBanDbContext dbcontext,
             SignInManager<AppUser> signInManager,
             IOperationRepository operationRepository,
             UserManager<AppUser> userManage,
-            IRoleOperationRepository roleOperationRepository,
+            IUserOperationRepository roleOperationRepository,
             IModuleRepository moduleRepository,
             RoleManager<AppRole> roleManager)
         {
             _operationRepository = operationRepository;
-            _moduleRepository= moduleRepository;
-            _roleOperationRepository= roleOperationRepository;
+            _moduleRepository = moduleRepository;
+            _userOperationRepository = roleOperationRepository;
             _dbcontext = dbcontext;
             _userManager = userManage;
             _signInManager = signInManager;
@@ -112,7 +113,7 @@ namespace Domain.IServices.User
             if (!string.IsNullOrEmpty(name))
                 query = query.Where(x => x.UserName.Contains(name));
             //Paging
-            int totalRow =await query.CountAsync();
+            int totalRow = await query.CountAsync();
             var data = await query.Skip((pageIndex.Value - 1) * pageSize.Value)
                 .Take(pageSize.Value)
                 .Select(x => new UserVmDto()
@@ -123,7 +124,7 @@ namespace Domain.IServices.User
                     FirstName = x.FirstName,
                     Id = x.Id,
                     LastName = x.LastName,
-                    RestaurantID =x.RestaurantID,
+                    RestaurantID = x.RestaurantID,
                     Status = x.Status,
                 }).ToListAsync();
             var pagedResult = new PagedResult<UserVmDto>()
@@ -150,6 +151,8 @@ namespace Domain.IServices.User
                 return UserNull;
             }
             var roles = await _userManager.GetRolesAsync(user);
+            var userOperations = await _userOperationRepository.GetByCondition(x => x.UserId == user.Id);
+            var operations = await _operationRepository.GetAll();
             var Uservm = new UserVmDto()
             {
                 Email = user.Email,
@@ -159,6 +162,11 @@ namespace Domain.IServices.User
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Roles = roles,
+                Opes = (userOperations != null && operations != null)
+                ?
+                userOperations.Join(operations, x1 => x1.OperationId, x2 => x2.Id, (x1, x2) => x2.Name).ToList()
+                :
+                new List<string>()
             };
             return Uservm;
         }
@@ -257,33 +265,30 @@ namespace Domain.IServices.User
                 return new ApiErrorResult<Tokens>("Đăng nhập không đúng");
             }
             var Mod = await _moduleRepository.GetAllAsQueryable();
-            var RoleOpe = await _roleOperationRepository.GetAllAsQueryable();
-            var Ope = await _operationRepository.GetAllAsQueryable();
+            var userOperations = await _userOperationRepository.GetByCondition(x => x.UserId == user.Id);
+            var operations = await _operationRepository.GetAll();
             var rolesUser = await _userManager.GetRolesAsync(user);
-            var query = (from Moduletbl in Mod
-                         join Operationtbl in Ope on Moduletbl.Id equals Operationtbl.ModuleId
-                         join RoleOperationtbl in RoleOpe on Operationtbl.Id equals RoleOperationtbl.OperationId
-                         select new RoleAndOperation()
-                         {
-                             Code = Operationtbl.Code,
-                             RoleId = Guid.Parse(RoleOperationtbl.RoleId),
-                         }).ToList();
-            var roles = _roleManager.Roles.Where(x=> rolesUser.Contains(x.Name)).ToList();
+            var query = (userOperations != null && operations != null)
+                ?
+                userOperations.Join(operations, x1 => x1.OperationId, x2 => x2.Id, (x1, x2) => x2.Name).ToList()
+                :
+                new List<string>();
+            var roles = _roleManager.Roles.Where(x => rolesUser.Contains(x.Name)).ToList();
 
-            var listOpe = new List<string>();
-            foreach(var item in roles)
-            {
-                foreach (var RoleAndOperation in query)
-                {
-                    if(RoleAndOperation.RoleId == item.Id)
-                    {
-                        listOpe.Add(RoleAndOperation.Code);
-                    }
-                }
-            }
-            listOpe = listOpe.Distinct().ToList();
-            
-            var claims= new List<Claim>();
+            //var listOpe = new List<string>();
+            //foreach (var item in roles)
+            //{
+            //    foreach (var RoleAndOperation in query)
+            //    {
+            //        if (RoleAndOperation.RoleId == item.Id)
+            //        {
+            //            listOpe.Add(RoleAndOperation.Code);
+            //        }
+            //    }
+            //}
+            //listOpe = listOpe.Distinct().ToList();
+
+            var claims = new List<Claim>();
             /*{
                 new Claim("email", user.Email);
                 new Claim("firstName", user.FirstName);
@@ -295,10 +300,10 @@ namespace Domain.IServices.User
             claims.Add(new Claim("firstName", user.FirstName));
             claims.Add(new Claim(ClaimTypes.Role, string.Join(";", rolesUser)));
             claims.Add(new Claim("userName", request.UserName));
-            foreach (var ope in listOpe)
-            {
-                claims.Add(new Claim(ope, ope));
-            }
+            //foreach (var ope in query)
+            //{
+                claims.Add(new Claim("Operations", string.Join(";", query)));
+            //}
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -418,7 +423,7 @@ namespace Domain.IServices.User
             var userName = decodeToken.Claims.First(claim => claim.Type == "userName").Value;
             var user = await _userManager.FindByNameAsync(userName);
 
-           
+
             var claims = new[]
             {
                 new Claim("email",email),
@@ -447,6 +452,6 @@ namespace Domain.IServices.User
             return new ApiSuccessResult<Tokens>(getToken);
         }
 
-        
+
     }
 }

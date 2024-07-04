@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class RoleOperation :BaseEntity
+    public class RoleOperation : BaseEntity
     {
         [Key]
         public int Id { get; set; }
-        public string?RoleId { get; set; }
+        public Guid RoleId { get; set; }
         public int OperationId { get; set; }
         public bool IsAccess { get; set; }
     }

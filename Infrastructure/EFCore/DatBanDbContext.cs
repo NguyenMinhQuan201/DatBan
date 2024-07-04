@@ -35,7 +35,7 @@ namespace Infrastructure.EF
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
         }
-        public DbSet<Area> Areas  { get; set; }
+        public DbSet<Area> Areas { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Discount> Discounts { get; set; }
@@ -48,6 +48,7 @@ namespace Infrastructure.EF
         public DbSet<Module> Modules { get; set; }
         public DbSet<RoleOperation> RoleOperations { get; set; }
         public DbSet<Operation> Operations { get; set; }
+        public DbSet<UserOperation> UserOperations { get; set; }
 
     }
 }

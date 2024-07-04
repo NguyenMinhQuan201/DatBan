@@ -9,10 +9,10 @@ using Infrastructure.Reponsitories.OrderDetailReponsitory;
 using Infrastructure.Reponsitories.OrderReponsitory;
 using Infrastructure.Reponsitories.OrderTableRepository;
 using Infrastructure.Reponsitories.RestaurantReponsitory;
-using Infrastructure.Reponsitories.RoleOperationReponsitories;
-using Infrastructure.Reponsitories.RoleOperationRepository;
 using Infrastructure.Reponsitories.RoleReponsitories;
 using Infrastructure.Reponsitories.TableReponsitory;
+using Infrastructure.Reponsitories.UserOperationReponsitories;
+using Infrastructure.Reponsitories.UserOperationRepository;
 using Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +27,7 @@ namespace Library.Extensions.ExtensionServices
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IModuleRepository, ModuleRepository>();
             services.AddTransient<IOperationRepository, OperationReponsitories>();
-            services.AddTransient<IRoleOperationRepository, RoleOperationReponsitories>();
+            services.AddTransient<IUserOperationRepository, UserOperationReponsitories>();
             services.AddTransient<IBlogRepository, BlogRepository>();
             services.AddTransient<IDiscountRepository, DiscountRepository>();
             services.AddTransient<IOrderTableRepository, OrderTableRepository>();

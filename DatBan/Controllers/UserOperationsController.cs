@@ -1,23 +1,18 @@
 ﻿using Domain.Features;
 using Domain.Models.Dto.UserDto;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace DatBan.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    /* [Authorize]*/
-    public class ModulesController : ControllerBase
+    public class UserOperationsController : Controller
     {
-        private readonly IModuleService _ModuleService;
-        public ModulesController(IModuleService ModuleService)
+        private readonly IUserOperationService _UserOperationService;
+        public UserOperationsController(IUserOperationService UserOperationService)
         {
-            _ModuleService = ModuleService;
+            _UserOperationService = UserOperationService;
         }
-        [HttpPost("add-Module")]
-        public async Task<IActionResult> Create([FromBody] ModuleDto request)
+        [HttpPost("add-UserOperation")]
+        public async Task<IActionResult> Create([FromBody] UserOperationDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -25,7 +20,7 @@ namespace Api.Controllers
             }
             else
             {
-                var result = await _ModuleService.Create(request);
+                var result = await _UserOperationService.Create(request);
                 if (result != null)
                 {
                     return Ok(result);
@@ -34,7 +29,7 @@ namespace Api.Controllers
             return BadRequest();
         }
         [HttpPut("update")]
-        public async Task<IActionResult> Update(int id, [FromBody] ModuleDto request)
+        public async Task<IActionResult> Update(int id, [FromBody] UserOperationDto request)
         {
             if (!ModelState.IsValid)
             {
@@ -42,7 +37,7 @@ namespace Api.Controllers
             }
             else
             {
-                var result = await _ModuleService.Update(id, request);
+                var result = await _UserOperationService.Update(id, request);
                 if (result != null)
                 {
                     return Ok(result);
@@ -51,7 +46,7 @@ namespace Api.Controllers
             }
             return BadRequest();
         }
-        [HttpDelete("delete-Module")]
+        [HttpDelete("delete-UserOperation")]
         public async Task<IActionResult> Delete(int id)
         {
             if (!ModelState.IsValid)
@@ -60,12 +55,12 @@ namespace Api.Controllers
             }
             else
             {
-                var result = await _ModuleService.Delete(id);
+                var result = await _UserOperationService.Delete(id);
                 return Ok(result);
             }
         }
-        [HttpGet("get-by-name-Module")]
-        public async Task<IActionResult> GetAll(int? pageSize, int? pageIndex, string? name)
+        [HttpGet("get-by-name-UserOperation")]
+        public async Task<IActionResult> GetAll(int? pageSize, int? pageIndex)
         {
             if (!ModelState.IsValid)
             {
@@ -73,7 +68,7 @@ namespace Api.Controllers
             }
             else
             {
-                var result = await _ModuleService.GetAll(pageSize, pageIndex, name);
+                var result = await _UserOperationService.GetAll(pageSize, pageIndex, "");
                 if (result.IsSuccessed)
                 {
                     return Ok(result);
@@ -92,31 +87,12 @@ namespace Api.Controllers
             }
             else
             {
-                var result = await _ModuleService.GetById(id);
-                if (result!=null)
+                var result = await _UserOperationService.GetById(id);
+                if (result != null)
                 {
                     return Ok(result);
                 }
             }
-            return BadRequest();
-        }
-        [HttpGet("get-deleted-Modules")]
-        public async Task<IActionResult> GetDeletedModule(int? pageSize, int? pageIndex, string? name)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            else
-            {
-                var result = await _ModuleService.GetDeletedModule(pageSize, pageIndex, name);
-                if (result.IsSuccessed)
-                {
-                    return Ok(result.ResultObj);
-                }
-
-            }
-
             return BadRequest();
         }
     }
