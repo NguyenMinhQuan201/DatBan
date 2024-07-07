@@ -5,6 +5,7 @@ using Domain.Features.Supplier.Dto;
 using Domain.Models.Dto.ImportInvoiceDto;
 using Infrastructure.Entities;
 using Infrastructure.Reponsitories.TableReponsitory;
+using Library.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Infrastructure.Services
                 CreatedAt = request.CreatedAt,
                 UpdatedAt = request.UpdatedAt,
                 TableNumber = request.TableNumber,
-                Status = request.Status,
+                Status = (int)EnumTable.Trong,
                 AreaID = request.AreaID,
             };
             await _TableRepository.CreateAsync(obj);

@@ -9,6 +9,7 @@ namespace Infrastructure.Entities
     public class Order : BaseEntity
     {
         public int OrderID { get; set; }
+        public int RestaurantID { get; set; }
         public string UserName { get; set; } = string.Empty;
         public double PriceTotal { get; set; }
         public string Description { get; set; } = string.Empty;
@@ -19,7 +20,8 @@ namespace Infrastructure.Entities
         public double Payment { get; set; }
         public double VAT { get; set; }
         public int Phone { get; set; }
-        public int DiscountID { get; set; }
+        public int Status {  get; set; }
+        //public int DiscountID { get; set; }
         public ICollection<OrderTable>?OrderTables { get; set; } 
         public ICollection<OrderDetail>? OrderDetails { get; set; } 
 

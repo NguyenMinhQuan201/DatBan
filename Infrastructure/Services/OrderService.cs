@@ -10,9 +10,12 @@ using Infrastructure.Reponsitories.OrderDetailReponsitory;
 using Infrastructure.Reponsitories.OrderReponsitory;
 using Infrastructure.Reponsitories.OrderTableRepository;
 using Infrastructure.Reponsitories.TableReponsitory;
+using Library.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Linq;
 using System.Linq.Expressions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -45,22 +48,42 @@ namespace Domain.Features.Order
         {
             var order = new Infrastructure.Entities.Order()
             {
+                RestaurantID = request.RestaurantID,
                 CreatedAt = DateTime.Now,
                 Phone = request.Phone,
                 UpdatedAt = DateTime.Now,
                 Description = request.Description,
-                DiscountID = request.DiscountID,
+                Status = (int)EnumOrder.Cho,
                 NumberOfCustomer = request.NumberOfCustomer,
-                VAT = request.VAT,
+                VAT = (double)VATORDER.Default,
                 Payment = request.Payment,
                 PriceTotal = request.PriceTotal,
                 UserName = request.UserName,
-                TableID = -1,
+                TableID = request.TableID,
                 OrderID = request.OrderID,
                 From =request.From,
                 To =request.To,
             };
             var temp = new List<OrderDetail>();
+            if (request.OrderDetailDtos != null)
+            {
+                foreach (var orderDetail in request.OrderDetailDtos)
+                {
+                    var _productOrder = new OrderDetail()
+                    {
+                        CreatedAt = DateTime.Now,
+                        Price = orderDetail.Price,
+                        Description = orderDetail.Description,
+                        DishID = orderDetail.DishID,
+                        NumberOfCustomer = orderDetail.NumberOfCustomer,
+                        OrderID = orderDetail.OrderID,
+                        UpdatedAt = DateTime.Now,
+                    };
+                    //sửa sản phẩm trong kho
+                    temp.Add(_productOrder);
+                }
+                order.OrderDetails = (ICollection<OrderDetail>)temp;
+            }
             try
             {
                 //var tabel = _tableRepository.GetById(order.TableID);
@@ -73,7 +96,7 @@ namespace Domain.Features.Order
             }
             return new ApiSuccessResult<OrderDto>(request);
         }
-
+        [AllowAnonymous]
         public async Task<ApiResult<bool>> Delete(int id)
         {
             if (id > 0)
@@ -125,10 +148,7 @@ namespace Domain.Features.Order
         {
             Expression<Func<Infrastructure.Entities.OrderDetail, bool>> expression = x => x.OrderID == id;
             var query = await _orderDetailReponsitory.GetByCondition(expression);
-            var queryTable = await _tableRepository.GetAll();
-            var queryTableOrder = await _orderTableRepository.GetAll();
             var data = (from orderDetailtbl in query
-                        join tble in queryTable on orderDetailtbl.TableID equals tble.TableID
                         select new OrderDetailDto()
                         {
                             CreatedAt = orderDetailtbl.CreatedAt,
@@ -137,11 +157,7 @@ namespace Domain.Features.Order
                             DishID = orderDetailtbl.DishID,
                             NumberOfCustomer = orderDetailtbl.NumberOfCustomer,
                             OrderID = orderDetailtbl.OrderID,
-                            Payment = orderDetailtbl.Payment,
-                            TableID = orderDetailtbl.TableID,
                             UpdatedAt = orderDetailtbl.UpdatedAt,
-                            //UserID = orderDetailtbl.UserID,
-                            TableNumber = tble.TableNumber
                         }).ToList();
             var temp = new List<OrderDetailDto>();
             if (data == null)
@@ -160,11 +176,12 @@ namespace Domain.Features.Order
                     return new ApiErrorResult<bool>("Không tìm thấy đối tượng");
                 }
                 findobj.Phone = request.Phone;
+                findobj.RestaurantID = request.RestaurantID;
                 findobj.UpdatedAt = DateTime.Now;
                 findobj.Description = request.Description;
-                findobj.DiscountID = request.DiscountID;
+                findobj.Status = request.Status;
                 findobj.NumberOfCustomer = request.NumberOfCustomer;
-                findobj.VAT = request.VAT;
+                //findobj.VAT = request.VAT;
                 findobj.Payment = request.Payment;
                 findobj.PriceTotal = request.PriceTotal;
                 findobj.UserName = request.UserName;
@@ -173,6 +190,12 @@ namespace Domain.Features.Order
                 //var tabel = await _tableRepository.GetById(request.TableID);
                 //tabel.Status = 1;
                 await _orderReponsitory.UpdateAsync(findobj);
+                var getTable = await _tableRepository.GetById(request.TableID);
+                //if (getTable != null)
+                //{
+                //    getTable.Status = 
+                //    await _tableRepository.UpdateAsync(getTable);
+                //}
                 var orderDetail = await _orderDetailReponsitory.GetByCondition(x => x.OrderID == id);
                 
                 return new ApiSuccessResult<bool>(true);
@@ -183,33 +206,19 @@ namespace Domain.Features.Order
         {
             if (id != null)
             {
-                var findobj = await _orderReponsitory.GetById(id);
+                var findobj = await _orderDetailReponsitory.GetById(id);
                 if (findobj == null)
                 {
                     return new ApiErrorResult<bool>("Không tìm thấy đối tượng");
                 }
-                //findobj.OrderID = request.OrderID;
-                //findobj.Description = request.Description;
-                //findobj.NumberOfCustomer = request.NumberOfCustomer;
-                //findobj.Payment = request.Payment;
-                //findobj.TableID = request.TableID;
-                //findobj.TableID = request.TableID;
-                //findobj.UpdatedAt = DateTime.Now;
-                //findobj.Description = request.Description;
-                //findobj.NumberOfCustomer = request.NumberOfCustomer;
-                //findobj.Payment = request.Payment;
-                //findobj.TableID = request.TableID;
-                //findobj.TableID = request.TableID;
-                //findobj.OrderID = request.OrderID;
-
-                await _orderReponsitory.UpdateAsync(findobj);
+                findobj.OrderID = request.OrderID;
+                findobj.Price = request.Price;
+                findobj.Description = request.Description;
+                findobj.DishID = request.OrderID;
+                findobj.NumberOfCustomer = request.NumberOfCustomer;
+                findobj.Quantity = request.Quantity;
+                await _orderDetailReponsitory.UpdateAsync(findobj);
                 var orderDetail = await _orderDetailReponsitory.GetByCondition(x => x.OrderID == id);
-                //foreach (var item in orderDetail)
-                //{
-                //    var pro = await _productReponsitory.GetByProductID(item.IdProduct);
-                //    pro.Quantity = pro.Quantity - item.Quantity;
-                //    await _productReponsitory.UpdateAsync(pro);
-                //}
                 return new ApiSuccessResult<bool>(true);
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
@@ -231,7 +240,7 @@ namespace Domain.Features.Order
                     Phone = request.Phone,
                     UpdatedAt = request.UpdatedAt,
                     Description = request.Description,
-                    DiscountID = request.DiscountID,
+                    Status = request.Status,
                     NumberOfCustomer = request.NumberOfCustomer,
                     VAT = request.VAT,
                     Payment = request.Payment,
@@ -252,8 +261,6 @@ namespace Domain.Features.Order
         public async Task<ApiResult<List<OrderDetailDto>>> GetAll()
         {
             var query = await _orderDetailReponsitory.GetAll();
-            var queryTable = await _tableRepository.GetAll();
-            var queryTableOrder = await _orderTableRepository.GetAll();
             var data = _mapper.Map<List<OrderDetailDto>>(query.ToList());
             var temp = new List<OrderDetailDto>();
             if (data == null)
@@ -282,20 +289,16 @@ namespace Domain.Features.Order
             }
             var queryTable = await _tableRepository.GetAllAsQueryable();
             var data = (from orderDetail in query
-                        join table in queryTable on orderDetail.TableID equals table.TableID
                         select new OrderDetailDto()
                         {
                             CreatedAt = DateTime.Now,
                             UpdatedAt = DateTime.Now,
                             Description = orderDetail.Description,
                             NumberOfCustomer = orderDetail.NumberOfCustomer,
-                            Payment = orderDetail.Payment,
-                            TableID = orderDetail.TableID,
                             OrderID = orderDetail.OrderID,
                             DishID = orderDetail.DishID,
                             Id = orderDetail.Id,
                             Price = orderDetail.Price,
-                            TableNumber = table.TableNumber,
                         }).ToList();
             var pagedResult = new PagedResult<OrderDetailDto>()
             {

@@ -18,4 +18,8 @@ namespace Library.Enums
         Trong = 0,
         DangDung = 1,
     }
+    public enum VATORDER
+    {
+        Default = 10
+    }
 }

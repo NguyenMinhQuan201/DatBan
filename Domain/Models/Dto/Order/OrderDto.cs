@@ -9,6 +9,7 @@ namespace Domain.Models.Dto.Order
     public class OrderDto : BaseDto
     {
         public int OrderID { get; set; }
+        public int RestaurantID { get; set; }
         public string UserName { get; set; } = string.Empty;
         public double PriceTotal { get; set; }
         public string Description { get; set; } = string.Empty;
@@ -18,7 +19,7 @@ namespace Domain.Models.Dto.Order
         public double Payment { get; set; }
         public double VAT { get; set; }
         public int Phone { get; set; }
-        public int DiscountID { get; set; }
+        public int Status { get; set; }
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public List<OrderDetailDto>?OrderDetailDtos { get; set; }

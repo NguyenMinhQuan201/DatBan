@@ -1,23 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmailApp;
+using Microsoft.AspNetCore.Mvc;
 using RazorWeb.Others;
-using System.Collections.Specialized;
-namespace RazorWeb.Controllers
+namespace DatBan.Controllers
 {
-    public class VNPayController : ControllerBase
+    [Route("api/[controller]")]
+    [ApiController]
+    public class VNPayController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public VNPayController(IHttpContextAccessor httpContextAccessor, IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public VNPayController(IConfiguration configuration)
         {
-            _httpClientFactory = httpClientFactory;
             _configuration = configuration;
-            _httpContextAccessor = httpContextAccessor;
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok();
+        }
         public string ip()
         {
             string ipAddress;
@@ -34,7 +33,8 @@ namespace RazorWeb.Controllers
             }
             return ipAddress;
         }
-        public ActionResult Payment()
+        [HttpGet]
+        public IActionResult Payment()
         {
             string url = _configuration["VNPAY:Url"];
             string returnUrl = _configuration["VNPAY:ReturnUrl"];
@@ -63,7 +63,7 @@ namespace RazorWeb.Controllers
             return Redirect(paymentUrl);
         }
 
-        public ActionResult PaymentConfirm()
+        public IActionResult PaymentConfirm()
         {
             if (Request.Query.Count > 0)
             {
