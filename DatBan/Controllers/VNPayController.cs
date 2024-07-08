@@ -12,12 +12,12 @@ namespace DatBan.Controllers
         {
             _configuration = configuration;
         }
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok();
-        }
-        public string ip()
+        //[HttpGet]
+        //public IActionResult Get()
+        //{
+        //    return Ok();
+        //}
+        private string ip()
         {
             string ipAddress;
             try
@@ -36,8 +36,10 @@ namespace DatBan.Controllers
         [HttpGet]
         public IActionResult Payment()
         {
+            var request = HttpContext.Request;
+            var hostAddress = request.Host.Value;
             string url = _configuration["VNPAY:Url"];
-            string returnUrl = _configuration["VNPAY:ReturnUrl"];
+            string returnUrl = request.Scheme +"://"+ hostAddress + "/"+_configuration["VNPAY:ReturnUrl"];
             string tmnCode = _configuration["VNPAY:TmnCode"];
             string hashSecret = _configuration["VNPAY:HashSecret"];
             var IpAdress = ip();
@@ -60,9 +62,9 @@ namespace DatBan.Controllers
 
             string paymentUrl = pay.CreateRequestUrlWithHmacSHA512(url, hashSecret);
 
-            return Redirect(paymentUrl);
+            return Ok(paymentUrl);
         }
-
+        [HttpGet("PaymentConfirm")]
         public IActionResult PaymentConfirm()
         {
             if (Request.Query.Count > 0)
@@ -103,7 +105,8 @@ namespace DatBan.Controllers
                 }
             }
 
-            return RedirectToAction("CheckoutSuccess", "Paypal");
+            //return RedirectToAction("CheckoutSuccess", "Paypal");
+            return Ok();
         }
     }
 }
