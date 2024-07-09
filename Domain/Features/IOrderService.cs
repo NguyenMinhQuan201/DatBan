@@ -15,10 +15,17 @@ namespace Domain.Features
     public interface IOrderService
     {
         public Task<ApiResult<OrderDto>> Create(OrderDto request);
+        public Task<ApiResult<OrderDetailDto>> CreateDetail(OrderDetailDto request);
+
         public Task<ApiResult<bool>> Update(int id, OrderDto request);
+        public Task<ApiResult<bool>> UpdateDetail(int id, OrderDetailDto request);
+
         public Task<ApiResult<bool>> Delete(int id);
+        public Task<ApiResult<bool>> DeleteDetail(int id);
+
         public Task<ApiResult<OrderDto>> GetById(int id);
         public Task<ApiResult<PagedResult<OrderDto>>> GetAll(int? pageSize, int? pageIndex, string search);
+        public Task<ApiResult<OrderDetailDto>> GetByIdDetail(int id);
         public Task<ApiResult<List<OrderDetailDto>>> GetAllOrderDetail(int id);
         public Task<ApiResult<List<OrderDetailDto>>> GetAll();
         public Task<ApiResult<List<OrderDto>>> GetAllOrder();

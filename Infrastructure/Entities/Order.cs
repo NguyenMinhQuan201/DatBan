@@ -13,6 +13,7 @@ namespace Infrastructure.Entities
         public string UserName { get; set; } = string.Empty;
         public double PriceTotal { get; set; }
         public string Description { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public int NumberOfCustomer { get; set; }
@@ -21,6 +22,7 @@ namespace Infrastructure.Entities
         public double VAT { get; set; }
         public int Phone { get; set; }
         public int Status {  get; set; }
+        public bool Deposit { get; set; }
         //public int DiscountID { get; set; }
         public ICollection<OrderTable>?OrderTables { get; set; } 
         public ICollection<OrderDetail>? OrderDetails { get; set; } 

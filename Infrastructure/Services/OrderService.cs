@@ -96,6 +96,28 @@ namespace Domain.Features.Order
             }
             return new ApiSuccessResult<OrderDto>(request);
         }
+        public async Task<ApiResult<OrderDetailDto>> CreateDetail(OrderDetailDto request)
+        {
+            var order = new Infrastructure.Entities.OrderDetail()
+            {
+                CreatedAt = DateTime.Now,
+                Price = request.Price,
+                Description = request.Description,
+                DishID = request.DishID,
+                NumberOfCustomer = request.NumberOfCustomer,
+                OrderID = request.OrderID,
+                UpdatedAt = DateTime.Now,
+            };
+            try
+            {
+                await _orderDetailReponsitory.CreateAsync(order);
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorResult<OrderDetailDto>(ex.ToString());
+            }
+            return new ApiSuccessResult<OrderDetailDto>(request);
+        }
         [AllowAnonymous]
         public async Task<ApiResult<bool>> Delete(int id)
         {
@@ -107,6 +129,20 @@ namespace Domain.Features.Order
                     return new ApiErrorResult<bool>("Không tìm thấy đối tượng");
                 }
                 await _orderReponsitory.DeleteAsync(findobj);
+                return new ApiSuccessResult<bool>(true);
+            }
+            return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
+        }
+        public async Task<ApiResult<bool>> DeleteDetail(int id)
+        {
+            if (id > 0)
+            {
+                var findobj = await _orderDetailReponsitory.GetById(id);
+                if (findobj == null)
+                {
+                    return new ApiErrorResult<bool>("Không tìm thấy đối tượng");
+                }
+                await _orderDetailReponsitory.DeleteAsync(findobj);
                 return new ApiSuccessResult<bool>(true);
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
@@ -202,7 +238,7 @@ namespace Domain.Features.Order
             }
             return new ApiErrorResult<bool>("Lỗi tham số chuyền về null hoặc trống");
         }
-        public async Task<ApiResult<bool>> Update(int id, OrderDetailDto request)
+        public async Task<ApiResult<bool>> UpdateDetail(int id, OrderDetailDto request)
         {
             if (id != null)
             {
@@ -257,7 +293,34 @@ namespace Domain.Features.Order
             }
             
         }
+        public async Task<ApiResult<OrderDetailDto>> GetByIdDetail(int id)
+        {
+            try
+            {
+                var request = await _orderDetailReponsitory.GetById(id);
+                if (request == null)
+                {
+                    return null;
+                }
 
+                var obj = new OrderDetailDto()
+                {
+                    CreatedAt = request.CreatedAt,
+                    Price = request.Price,
+                    Description = request.Description,
+                    DishID = request.DishID,
+                    NumberOfCustomer = request.NumberOfCustomer,
+                    OrderID = request.OrderID,
+                    UpdatedAt = request.UpdatedAt,
+                };
+                return new ApiSuccessResult<OrderDetailDto>(obj);
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorResult<OrderDetailDto>(ex.ToString());
+            }
+
+        }
         public async Task<ApiResult<List<OrderDetailDto>>> GetAll()
         {
             var query = await _orderDetailReponsitory.GetAll();
