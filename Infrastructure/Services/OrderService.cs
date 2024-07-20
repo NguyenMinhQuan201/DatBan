@@ -217,14 +217,10 @@ namespace Domain.Features.Order
                 findobj.Description = request.Description;
                 findobj.Status = request.Status;
                 findobj.NumberOfCustomer = request.NumberOfCustomer;
-                //findobj.VAT = request.VAT;
                 findobj.Payment = request.Payment;
                 findobj.PriceTotal = request.PriceTotal;
                 findobj.UserName = request.UserName;
                 findobj.TableID = request.TableID;
-                // lay ra ban
-                //var tabel = await _tableRepository.GetById(request.TableID);
-                //tabel.Status = 1;
                 await _orderReponsitory.UpdateAsync(findobj);
                 var getTable = await _tableRepository.GetById(request.TableID);
                 //if (getTable != null)

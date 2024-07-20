@@ -18,7 +18,7 @@ var emailConfig = builder.Configuration
         .Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-
+builder.Services.AddSession();
 // Add services to the container.
 
 builder.Services.AddDbContext<DatBanDbContext>(options =>
@@ -99,6 +99,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 /*app.ConfigureExceptionHandle(logger);*/
+app.UseSession();
 app.ConfigureCustomExceptionMiddleware();
 app.UseHttpsRedirection();
 app.UseStaticFiles();

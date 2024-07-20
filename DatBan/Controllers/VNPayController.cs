@@ -1,5 +1,11 @@
-﻿using EmailApp;
+﻿using DataDemo.Common;
+using Domain.Features;
+using Domain.Features.Order;
+using Domain.Models.Dto.Order;
+using EmailApp;
+using Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RazorWeb.Others;
 namespace DatBan.Controllers
 {
@@ -8,9 +14,13 @@ namespace DatBan.Controllers
     public class VNPayController : Controller
     {
         private readonly IConfiguration _configuration;
-        public VNPayController(IConfiguration configuration)
+        private readonly IOrderService _orderService;
+
+        public VNPayController(IConfiguration configuration, IOrderService orderService)
         {
             _configuration = configuration;
+            _orderService = orderService;
+
         }
         //[HttpGet]
         //public IActionResult Get()
@@ -33,23 +43,22 @@ namespace DatBan.Controllers
             }
             return ipAddress;
         }
-        [HttpGet]
-        public IActionResult Payment()
+        [HttpPost]
+        public IActionResult Payment([FromBody] OrderDto order)
         {
+            HttpContext.Session.SetString("Order", JsonConvert.SerializeObject(order));
             var request = HttpContext.Request;
             var hostAddress = request.Host.Value;
             string url = _configuration["VNPAY:Url"];
-            string returnUrl = request.Scheme +"://"+ hostAddress + "/"+_configuration["VNPAY:ReturnUrl"];
+            string returnUrl = request.Scheme + "://" + hostAddress + "/" + _configuration["VNPAY:ReturnUrl"];
             string tmnCode = _configuration["VNPAY:TmnCode"];
             string hashSecret = _configuration["VNPAY:HashSecret"];
             var IpAdress = ip();
             PayLib pay = new PayLib();
-
-
             pay.AddRequestData("vnp_Version", "2.1.0"); //Phiên bản api mà merchant kết nối. Phiên bản hiện tại là 2.0.0
             pay.AddRequestData("vnp_Command", "pay"); //Mã API sử dụng, mã cho giao dịch thanh toán là 'pay'
             pay.AddRequestData("vnp_TmnCode", tmnCode); //Mã website của merchant trên hệ thống của VNPAY (khi đăng ký tài khoản sẽ có trong mail VNPAY gửi về)
-            pay.AddRequestData("vnp_Amount", "1000000"); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
+            pay.AddRequestData("vnp_Amount", Convert.ToString(order.PriceTotal * 100)); //số tiền cần thanh toán, công thức: số tiền * 100 - ví dụ 10.000 (mười nghìn đồng) --> 1000000
             pay.AddRequestData("vnp_BankCode", ""); //Mã Ngân hàng thanh toán (tham khảo: https://sandbox.vnpayment.vn/apis/danh-sach-ngan-hang/), có thể để trống, người dùng có thể chọn trên cổng thanh toán VNPAY
             pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss")); //ngày thanh toán theo định dạng yyyyMMddHHmmss
             pay.AddRequestData("vnp_CurrCode", "VND"); //Đơn vị tiền tệ sử dụng thanh toán. Hiện tại chỉ hỗ trợ VND
@@ -65,8 +74,9 @@ namespace DatBan.Controllers
             return Ok(paymentUrl);
         }
         [HttpGet("PaymentConfirm")]
-        public IActionResult PaymentConfirm()
+        public async Task<IActionResult> PaymentConfirm()
         {
+            var deserializedObject = JsonConvert.DeserializeObject<OrderDto>(HttpContext.Session.GetString("Order"));
             if (Request.Query.Count > 0)
             {
                 string hashSecret = _configuration["VNPAY:HashSecret"]; //Chuỗi bí mật
@@ -92,21 +102,34 @@ namespace DatBan.Controllers
                     {
                         //Thanh toán thành công
                         //ViewBag.Message = "Thanh toán thành công hóa đơn " + orderId + " | Mã giao dịch: " + vnpayTranId;
+                        if (deserializedObject != null)
+                        {
+                            var updatess = await _orderService.Create(deserializedObject);
+                            return Ok(updatess.IsSuccessed
+                                ? new ApiSuccessResult<string>("Thêm thành công")
+                                : new ApiErrorResult<string>("Có lỗi"));
+                        }
+                        else
+                        {
+                            return Ok(new ApiSuccessResult<string>("deserializedObject bị NULL"));
+                        }
                     }
                     else
                     {
                         //Thanh toán không thành công. Mã lỗi: vnp_ResponseCode
+                        return Ok(new ApiSuccessResult<string>("vnp_ResponseCode"));
                         //ViewBag.Message = "Có lỗi xảy ra trong quá trình xử lý hóa đơn " + orderId + " | Mã giao dịch: " + vnpayTranId + " | Mã lỗi: " + vnp_ResponseCode;
                     }
                 }
                 else
                 {
+                    return Ok(new ApiSuccessResult<string>("vnp_ResponseCode"));
                     //ViewBag.Message = "Có lỗi xảy ra trong quá trình xử lý";
                 }
             }
 
             //return RedirectToAction("CheckoutSuccess", "Paypal");
-            return Ok();
+            return Ok("Lỗi tạo");
         }
     }
 }
