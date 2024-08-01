@@ -11,6 +11,7 @@ using Infrastructure.Reponsitories.OperationReponsitories;
 using Infrastructure.Reponsitories.UserOperationRepository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -302,7 +303,7 @@ namespace Domain.IServices.User
             claims.Add(new Claim("userName", request.UserName));
             //foreach (var ope in query)
             //{
-                claims.Add(new Claim("Operations", string.Join(";", query)));
+            claims.Add(new Claim("Operations", string.Join(";", query)));
             //}
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -452,6 +453,35 @@ namespace Domain.IServices.User
             return new ApiSuccessResult<Tokens>(getToken);
         }
 
+        public async Task<ApiResult<EmailChecked>> SendMailCheckUser(string email, string uri)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.Email == email);
+            if (user == null)
+            {
+                return new ApiErrorResult<EmailChecked>("Không có User");
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var param = new Dictionary<string, string?> {
+                {"token",token },
+                {"email",email}
+            };
+            var callback = QueryHelpers.AddQueryString(uri, param);
+            return new ApiSuccessResult<EmailChecked>(new EmailChecked { ClientUrl = callback, Email = email, TokenRenew = token });
+        }
 
+        public async Task<ApiResult<bool>> RenewPassword(RenewPassword obj)
+        {
+            var user = _userManager.Users.FirstOrDefault(x => x.Email == obj.Email);
+            if (user == null)
+            {
+                return new ApiErrorResult<bool>("Không có User");
+            }
+            var result = await _userManager.ResetPasswordAsync(user, obj.TokenRenew!, obj.PassWord!);
+            if (!result.Succeeded)
+            {
+                return new ApiErrorResult<bool>(result.Errors.Select(e => e.Description).FirstOrDefault().ToString());
+            }
+            return new ApiSuccessResult<bool>(true);
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace EmailApp
     public interface IEmailSender
     {
         void SendEmail(Message message);
+        void SendEmailAsync(Message message);
     }
     public class EmailSender : IEmailSender
     {
@@ -26,6 +27,28 @@ namespace EmailApp
             var emailMessage = CreateEmailMessage(message);
 
             Send(emailMessage);
+        }
+
+        public async void SendEmailAsync(Message message)
+        {
+            var emailMessage = await CreateEmailMessageAsync(message);
+
+            Send(emailMessage);
+        }
+        private async Task<MimeMessage> CreateEmailMessageAsync(Message message)
+        {
+            var emailMessage = new MimeMessage();
+            emailMessage.From.Add(new MailboxAddress("", _emailConfig.From));
+            emailMessage.To.AddRange(message.To);
+            emailMessage.Subject = message.Subject;
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = string.Format("<h2 style='color:red;'>{0}</h2>", message.Content)
+            };
+
+            await Task.CompletedTask;
+
+            return emailMessage;
         }
         private MimeMessage CreateEmailMessage(Message message)
         {

@@ -2,9 +2,12 @@
 using Domain.Models.Dto.LoginDto;
 using Domain.Models.Dto.RoleDto;
 using Domain.Models.Dto.UserDto;
+using EmailApp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System;
 
 namespace Api.Controllers
 {
@@ -19,9 +22,12 @@ namespace Api.Controllers
         private const string DELETE_CST = "User_Delete";
         private const string ADMIN_CST = "admin";
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IEmailSender _emailSender;
+
+        public UserController(IUserService userService, IEmailSender emailSender)
         {
             _userService = userService;
+            _emailSender = emailSender;
         }
         [HttpPost("renewToken")]
         public async Task<IActionResult> RenewToken(TokenRequestDto request)
@@ -76,7 +82,31 @@ namespace Api.Controllers
 
 
         }
-        
+        [HttpGet("forgot")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendMailCheckUser(string email, string uri)
+        {
+            var resultToken = await _userService.SendMailCheckUser(email, uri);
+            if (!resultToken.IsSuccessed)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+            var message = new Message(new string[] { email }, "ForgotPassword", resultToken.ResultObj.ClientUrl);
+
+            _emailSender.SendEmailAsync(message);
+            return Ok(resultToken);
+        }
+        [HttpPost("renew-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ReNewPassword([FromBody] RenewPassword obj)
+        {
+            var resultToken = await _userService.RenewPassword(obj);
+            if (!resultToken.IsSuccessed)
+            {
+                return BadRequest("Có lỗi xảy ra");
+            }
+            return Ok(resultToken.IsSuccessed);
+        }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserCreateRequestDto request)
         {
