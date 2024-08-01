@@ -10,6 +10,7 @@ namespace API.Controllers
     [ApiController]
     public class AreasController : ControllerBase
     {
+        //Đây là để kiểm tra
         private readonly IAreaService _Areaservice;
         public AreasController(IAreaService Areaservice)
         {
