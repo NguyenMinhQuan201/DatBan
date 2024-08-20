@@ -23,6 +23,11 @@ namespace Api.Controllers
         {
             _userService = userService;
         }
+        [HttpGet]
+        public async Task<IActionResult> ForgetPassWord(string email)
+        {
+            return Ok();
+        }
         [HttpPost("renewToken")]
         public async Task<IActionResult> RenewToken(TokenRequestDto request)
         {
