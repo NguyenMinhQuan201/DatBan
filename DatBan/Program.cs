@@ -35,9 +35,11 @@ var mapperConfig = new MapperConfiguration(config =>
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSingleton(mapper);
+
 builder.Services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<DatBanDbContext>()
                 .AddDefaultTokenProviders();
+
 builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
@@ -88,6 +90,9 @@ builder.Services.AddAuthorizeEx();
 var serviceProvider = builder.Services.BuildServiceProvider();
 var logger = serviceProvider.GetService<ILogger<Program>>();
 builder.Services.AddSingleton(typeof(ILogger), logger);
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opt=> opt.TokenLifespan = TimeSpan.FromMinutes(5));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

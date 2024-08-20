@@ -11,6 +11,8 @@ namespace Domain.Features
     {
         public Task<ApiResult<Tokens>> Login(UserLoginRequestDto request);
         public Task<ApiResult<Tokens>> RenewToken(TokenRequestDto request);
+        public Task<ApiResult<EmailChecked>> SendMailCheckUser(string email,string uri);
+        public Task<ApiResult<bool>> RenewPassword(RenewPassword obj);
         /*public Task<string> GetNewToken(string token);*/
         public Task<bool> Create(UserCreateRequestDto request);
         public Task<bool> Update(Guid id, UserUpdateRequestDto request);
