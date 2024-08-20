@@ -10,7 +10,7 @@ namespace API.Controllers
     [ApiController]
     public class AreasController : ControllerBase
     {
-        //thay đổi sang cho tes2
+        //thay đổi test
         private readonly IAreaService _Areaservice;
         public AreasController(IAreaService Areaservice)
         {
